@@ -1,10 +1,10 @@
-import os
+import os, argparse
+import shutil
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain.schema.document import Document
-
 
 DATA_PATH = 'data'
 CHROMA_PATH = 'chroma'
@@ -44,6 +44,7 @@ def split_docs(docs: list[Document]) -> list[list[str]]:
     return text_splitter.split_documents(docs)
 
 # ollama pull llama3
+# ollama serve
 def embedding_func():
     """
     Initialize an OllamaEmbeddings object with the specified model.
@@ -90,7 +91,7 @@ def chromadb(chunks: list[Document]) -> None:
     for chunk in chunks:
         source = chunk.metadata.get('source')
         page = chunk.metadata.get('page')
-        current_page_id = f"{source}:{page}"
+        current_page_id = f"{source}:{page+1}"
 
         if current_page_id == prev_page_id:
             chunk_index += 1
@@ -119,8 +120,22 @@ def chromadb(chunks: list[Document]) -> None:
     else:
         print("--> No new documents need to be added.\n")
 
-docs = load_docs(DATA_PATH)
-chunks = split_docs(docs)
-chromadb(chunks)
+
+if __name__ == "__main__":
+    # Check if the database should be cleared (using the --reset flag).
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--reset", action="store_true", help="Reset the database.")
+    args = parser.parse_args()
+    if args.reset:
+        print("\n--> Clearing Database!")
+        if os.path.exists(CHROMA_PATH):
+            shutil.rmtree(CHROMA_PATH)
+        else:
+            print(f"\n--> The specified directory '{CHROMA_PATH}' does not exist.\n")
+
+    # Create (or update) the data store.
+    docs = load_docs(DATA_PATH)
+    chunks = split_docs(docs)
+    chromadb(chunks)
 
 
