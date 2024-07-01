@@ -37,8 +37,8 @@ def split_docs(docs: list[Document]) -> list[list[str]]:
     list[list[str]]: A list of lists of strings, where each inner list represents a chunk of text extracted from the PDF files.
     """
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=800,
-        chunk_overlap=80,
+        chunk_size=1000,
+        chunk_overlap=100,
         length_function=len,
     )
     return text_splitter.split_documents(docs)
@@ -56,7 +56,7 @@ def embedding_func():
     ValueError: If the specified model is not supported.
     """
     embed_f = OllamaEmbeddings(
-        model='llama3',
+        model='mxbai-embed-large',
     )
     return embed_f
 
