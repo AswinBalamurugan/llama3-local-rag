@@ -1,5 +1,4 @@
 import os, argparse
-import shutil
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -89,8 +88,10 @@ def chromadb(chunks: list[Document]) -> None:
     chunk_index = 0
     prev_page_id = None
     for chunk in chunks:
-        source = chunk.metadata.get('source')
+        source = chunk.metadata.get('source').split(os.sep)[1]
+        chunk.metadata.update([('source', source)])
         page = chunk.metadata.get('page')
+
         current_page_id = f"{source}:{page+1}"
 
         if current_page_id == prev_page_id:
@@ -101,41 +102,56 @@ def chromadb(chunks: list[Document]) -> None:
         
         chunk.metadata['id'] = f"{current_page_id}:{chunk_index}"
 
-    
     # Add / update the documents in database
     existing_items = db.get(include=[])
     existing_ids = set(existing_items['ids'])
-    print(f"\n--> Number of existing documents in DB: {len(existing_ids)}")
 
     # Only add docs that don't already exist
-    new_chunks = []
-    for chunk in chunks:
-        if chunk.metadata['id'] not in existing_ids:
-            new_chunks.append(chunk)
-
+    new_chunks = [chunk for chunk in chunks if chunk.metadata['id'] not in existing_ids]
     new_chunk_ids = [chunk.metadata['id'] for chunk in new_chunks]
-    if new_chunk_ids != []:
+    if new_chunk_ids:
         db.add_documents(new_chunks, ids=new_chunk_ids)
-        print(f"--> Added {len(new_chunk_ids)} documents to DB.\n")
-    else:
-        print("--> No new documents need to be added.\n")
 
+def remove_chunks_by_file_name(db: Chroma, file_name: str) -> None:
+    """
+    Remove chunks from the Chroma database based on the file name.
 
-if __name__ == "__main__":
-    # Check if the database should be cleared (using the --reset flag).
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--reset", action="store_true", help="Reset the database.")
-    args = parser.parse_args()
-    if args.reset:
-        print("\n--> Clearing Database!")
-        if os.path.exists(CHROMA_PATH):
-            shutil.rmtree(CHROMA_PATH)
-        else:
-            print(f"\n--> The specified directory '{CHROMA_PATH}' does not exist.\n")
+    Parameters:
+    db (Chroma): An instance of the Chroma database.
+    file_name (str): The file name for which the chunks need to be removed.
 
+    Returns:
+    None: This function does not return any value. It only removes the chunks from the database.
+    """
+    # Retrieve all items from the database, including their metadata
+    items = db.get(where={'source':file_name})
+
+    if items:
+        db.delete(ids=items['ids'])
+        file_name = file_name.replace(' ','\ ')
+        os.system(f'rm {os.path.join(DATA_PATH, file_name)}')
+
+# Check if the database should be cleared.
+parser = argparse.ArgumentParser()
+parser.add_argument("--clear", action="store_true", help="Reset the database.")
+parser.add_argument("--add", action="store_true", help="Add files to the database.")
+parser.add_argument("--remove", type=str, help="Remove file from the database by their name.")
+args = parser.parse_args()
+
+if args.clear:
+    os.system(f'rm -rf {CHROMA_PATH}')
+    os.system(f'rm -rf {DATA_PATH}')
+elif args.add:
     # Create (or update) the data store.
+    os.makedirs(CHROMA_PATH, exist_ok=True)
     docs = load_docs(DATA_PATH)
     chunks = split_docs(docs)
     chromadb(chunks)
+elif args.remove:
+    db = Chroma(
+        persist_directory=CHROMA_PATH,
+        embedding_function=embedding_func()
+    )
+    result = remove_chunks_by_file_name(db, args.remove)
 
 
