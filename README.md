@@ -69,20 +69,20 @@ The above commands have to be executed only once to download the models. The bel
 ollama serve
 ```
 
-5. Run the chatbot: Start the chatbot server and interact with it using the user interface by running the below command in the same directory where the `rag_chatbot` python file exists.
+5. Run the chatbot: Start the chatbot server and interact with it using the user interface by running the below command in the same directory where the `rag_chatbot` python file exists. Use the `Uno-Rules.pdf` to try out the sample question in the screenshots sections.
 ```bash
 streamlit run rag_chatbot.py
 ```
 
 ## Screenshots
 ![first](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/first.png)
-This is how the UI looks when you run the chatbot for the first time.
+`This is how the UI looks when you run the chatbot for the first time.`
 
 ![doc upload](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/upload_doc.png)
-This is how the UI looks when you upload a document and update the database.
+`This is how the UI looks when you upload a document and update the database.`
 
 ![qna](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/sample_qna.png)
-This is a sample response from the LLM.
+`This is a sample response from the LLM.`
 
 ## Conclusion:
 The local-RAG chatbot is a powerful and efficient retrieval-augmented generation system that can handle large volumes of text data. By utilizing the Chroma database and Llama3 model, the chatbot provides accurate and context-aware responses to user queries. The system is designed to be easily installed and used, making it an ideal solution for various applications.
