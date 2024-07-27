@@ -54,7 +54,7 @@ def query_rag(query_text: str) -> tuple[str,pd.DataFrame]:
     response = chain.invoke({"context": context_text, "question": query_text})
 
     # Extract and format the sources from the retrieved documents
-    sources = [doc.metadata.get("source") for doc in results]
+    sources = [doc.metadata.get("ids") for doc in results]
     source_data = [source.split(':')[:2] for source in sources if source]
     df_sources = pd.DataFrame(source_data, columns=['Document', 'Page Number'])
 
