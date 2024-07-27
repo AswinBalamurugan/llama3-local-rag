@@ -1,6 +1,6 @@
 Please refer: [My Project Collection](https://github.com/AswinBalamurugan/Machine_Learning_Projects/blob/main/README.md)
 
-# Local-RAG: A Retrieval-Augmented Generation Chatbot with Chroma Database and Llama3 Model
+# Local-RAG: A Chatbot with Chroma Database and Llama3 Model
 
 ## Aim 
 The primary aim of this project is to develop a local-RAG chatbot that can efficiently handle large volumes of text data and provide responses to user queries.
@@ -16,16 +16,16 @@ This project presents a local-RAG chatbot that utilizes the **Chroma** database 
 4. Providing a comprehensive documentation and README file for easy installation and usage.
 
 ## Introduction
-- **RAG**
+- **RAG** <br>
  Retrieval-Augmented Generation is a method that enhances the performance of LLMs by incorporating relevant context from a database of documents.
 
-- **LLM**
+- **LLM** <br>
  Large Language Models (LLMs) are powerful AI systems that generate human-like text based on the input they receive. They excel at understanding and generating contextual information.
 
-- **Llama3**
+- **Llama3** <br>
  A state-of-the-art LLM developed by Meta AI, Llama3 is a powerful language model that excels at generating human-like text based on the input it receives.
 
-- **Vector Database**
+- **Vector Database** <br>
  A vector database is a type of database that uses vector embeddings to represent the data, allowing for efficient and accurate similarity searches. It is designed to efficiently store and retrieve large volumes of text data.
 
 ## Method:
@@ -54,7 +54,7 @@ cd iris-classification
 
 2. Create a virtual environment and activate it
 
-3. Install the required dependencies: Install the necessary Python packages using the below command. 
+3. Install the necessary Python packages using the below command. 
 ```bash
 pip install -r requirements.txt
 ```
@@ -75,14 +75,17 @@ streamlit run rag_chatbot.py
 ```
 
 ## Screenshots
-![first](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/first.png)
-`This is how the UI looks when you run the chatbot for the first time.`
+|This is how the UI looks when you run the chatbot for the first time.|
+|-----|
+|![first](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/first.png)|
 
-![doc upload](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/upload_doc.png)
-`This is how the UI looks when you upload a document and update the database.`
+|This is how the UI looks when you upload a document and update the database.|
+|-----|
+|![doc upload](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/upload_doc.png)|
 
-![qna](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/sample_qna.png)
-`This is a sample response from the LLM.`
+|This is a sample response from the LLM.|
+|------|
+|![qna](https://github.com/AswinBalamurugan/llama3-local-rag/blob/main/images/sample_qna.png)|
 
 ## Conclusion:
 The local-RAG chatbot is a powerful and efficient retrieval-augmented generation system that can handle large volumes of text data. By utilizing the Chroma database and Llama3 model, the chatbot provides accurate and context-aware responses to user queries. The system is designed to be easily installed and used, making it an ideal solution for various applications.
