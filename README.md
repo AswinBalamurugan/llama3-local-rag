@@ -1,6 +1,6 @@
 Please refer: [My Project Collection](https://github.com/AswinBalamurugan/Machine_Learning_Projects/blob/main/README.md)
 
-# Local-RAG: A Chatbot with Chroma Database and Llama3 Model
+# Local-RAG: <br> A Chatbot with Chroma Database and Llama3 Model
 
 ## Aim 
 The primary aim of this project is to develop a local-RAG chatbot that can efficiently handle large volumes of text data and provide responses to user queries.
